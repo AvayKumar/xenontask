@@ -16,7 +16,7 @@
   </head>
 
   <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+    <nav class="navbar navbar-inverse">
       <div class="container">
         <div class="navbar-header">
           <a class="navbar-brand" href="#">System Metrics</a>
@@ -27,11 +27,41 @@
 
       <div class="row">
         <div class="col-xs-12" id='loadChart'></div>  
+      </div>
+      <div class="row">
+        <table class="table table-responsive" style="margin:50px 0">
+          <head>
+            <tr>
+              <th>Average cpu.user_p %</th>
+              <th>Average cpu.sysetm_p %</th>
+              <th>Average mem.total</th>
+               <th>Average mem.used</th>
+              <th>Average mem.used_p %</th>
+              <th>Average mem.free GB</th>
+            </tr>
+          </head>
+          <tbody id="cpuData">
+          </tbody>
+          <footer>
+            <tr>
+              <th>Average cpu.user_p %</th>
+              <th>Average cpu.sysetm_p %</th>
+              <th>Average mem.total</th>
+               <th>Average mem.used</th>
+              <th>Average mem.used_p %</th>
+              <th>Average mem.free GB</th>
+            </tr>
+          </footer>      
+        </table>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-md-6" id='cpuChart'></div>
       </div>  
 
     </div> <!-- /container -->
 
   <script type="text/javascript" src="js/jquery-2.2.3.min.js"></script>
   <script type="text/javascript" src="js/data_loader.js"></script>
+
   </body>
 </html>
