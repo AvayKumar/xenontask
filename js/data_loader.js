@@ -283,9 +283,107 @@ BAS_URL = 'http://localhost';
           $.post(BAS_URL + '/data/elastic_controller.php', {query: JSON.stringify(cpu_data_query)}, function(response) {
                 
                   var buckets = response.aggregations['9'].buckets['0'];
-                  $('#cpuData').html('<tr><td>' + Math.round(buckets['1'].value*100000)/1000 + ' % </td><td>' + Math.round(buckets['3'].value*100000)/1000 + ' % </td><td>' + Math.round(buckets['4'].value/1024000)/1000 + ' GB </td><td>' + Math.round(buckets['5'].value/1024000)/1000 + ' GB </td><td>' + Math.round(buckets['8'].value*100000)/1000 + ' % </td><td>' + Math.round(buckets['6'].value/1024000)/1000 + ' GB </tr>');
+                  $('#cpuData').html('<tr><td>' + Math.round(buckets['1'].value*100000)/1000 + '% </td><td>' + Math.round(buckets['3'].value*100000)/1000 + '% </td><td>' + Math.round(buckets['4'].value/1024000)/1000 + ' GB </td><td>' + Math.round(buckets['5'].value/1024000)/1000 + ' GB </td><td>' + Math.round(buckets['8'].value*100000)/1000 + '% </td><td>' + Math.round(buckets['6'].value/1024000)/1000 + ' GB </tr>');
 
           },'JSON');
+   }
+
+   function fetchProcessData() {
+
+        var process_data_query = {
+              "size": 0,
+              "aggs": {
+                "6": {
+                  "terms": {
+                    "field": "proc.name",
+                    "size": 10,
+                    "order": {
+                      "1": "desc"
+                    }
+                  },
+                  "aggs": {
+                    "1": {
+                      "max": {
+                        "field": "proc.cpu.user_p"
+                      }
+                    },
+                    "2": {
+                      "max": {
+                        "field": "proc.mem.rss"
+                      }
+                    },
+                    "3": {
+                      "max": {
+                        "field": "proc.mem.rss_p"
+                      }
+                    },
+                    "5": {
+                      "max": {
+                        "field": "proc.mem.share"
+                      }
+                    }
+                  }
+                }
+              },
+              "query": {
+                "filtered": {
+                  "query": {
+                    "query_string": {
+                      "query": "type: process",
+                      "analyze_wildcard": true
+                    }
+                  },
+                  "filter": {
+                    "bool": {
+                      "must": [
+                        {
+                          "query": {
+                            "query_string": {
+                              "analyze_wildcard": true,
+                              "query": "*"
+                            }
+                          }
+                        },
+                        {
+                          "range": {
+                            "@timestamp": {
+                              "gte": 'now-15m',
+                              "lte": 'now',
+                              "format": "epoch_millis"
+                            }
+                          }
+                        }
+                      ],
+                      "must_not": []
+                    }
+                  }
+                }
+              }
+            };
+
+        $.post(BAS_URL + '/data/elastic_controller.php', {query: JSON.stringify(process_data_query)}, function(response) {
+                
+                console.log(response);
+                var buckets = response.aggregations['6'].buckets;
+
+                $('#processData').empty();
+
+                for(var i=0; i<buckets.length; i++) {
+                    
+                    $('#processData').append(
+                      '<tr>' +
+                        '<td>' + buckets[i].key + '</td>' +
+                        '<td>' + Math.round( buckets[i]['1'].value*100000)/1000 + '% </td>' +
+                        '<td>' + Math.round( buckets[i]['2'].value/1024000)/1000 + ' GB </td>' +
+                        '<td>' + Math.round( buckets[i]['3'].value*100000)/1000 + '% </td>' +
+                        '<td>' + Math.round( buckets[i]['5'].value/1024000)/1000 + ' GB </td>' +
+                      '</tr>'
+                      );
+
+                }  
+
+
+        },'JSON');    
    }
 
    /*
@@ -295,14 +393,14 @@ BAS_URL = 'http://localhost';
 
       fetchLoadData();
       fetchCpuData();
-
+      fetchProcessData();
    }
 
 
   $(function(){
 
         loadData();
-        setInterval(loadData, 30000);
+        setInterval(loadData, 15000);
         
 
   });

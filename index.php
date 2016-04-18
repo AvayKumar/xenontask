@@ -29,34 +29,58 @@
         <div class="col-xs-12" id='loadChart'></div>  
       </div>
       <div class="row">
-        <table class="table table-responsive" style="margin:50px 0">
+        <h3 class="text-center">CPU load</h3>
+        <table class="table table-responsive" style="margin:0 0 50px 0">
           <head>
             <tr>
-              <th>Average cpu.user_p %</th>
-              <th>Average cpu.sysetm_p %</th>
+              <th>Average cpu.user_p</th>
+              <th>Average cpu.sysetm_p</th>
               <th>Average mem.total</th>
                <th>Average mem.used</th>
-              <th>Average mem.used_p %</th>
-              <th>Average mem.free GB</th>
+              <th>Average mem.used_p</th>
+              <th>Average mem.free</th>
             </tr>
           </head>
           <tbody id="cpuData">
           </tbody>
           <footer>
             <tr>
-              <th>Average cpu.user_p %</th>
-              <th>Average cpu.sysetm_p %</th>
+              <th>Average cpu.user_p</th>
+              <th>Average cpu.sysetm_p</th>
               <th>Average mem.total</th>
                <th>Average mem.used</th>
-              <th>Average mem.used_p %</th>
-              <th>Average mem.free GB</th>
+              <th>Average mem.used_p</th>
+              <th>Average mem.free</th>
             </tr>
           </footer>      
         </table>
       </div>
+
       <div class="row">
-        <div class="col-xs-12 col-md-6" id='cpuChart'></div>
-      </div>  
+        <h3 class="text-center">Top Process statistics</h3>
+        <table class="table table-responsive" style="margin:0 0 50px 0">
+          <head>
+            <tr>
+              <th>proc.name</th>
+              <th>proc.cpu.user_p</th>
+              <th>proc.mem.rss</th>
+              <th>proc.mem.rss_p</th>
+              <th>proc.mem.share</th>
+            </tr>
+          </head>
+          <tbody id="processData">
+          </tbody>
+          <footer>
+            <tr>
+              <th>proc.name</th>
+              <th>proc.cpu.user_p</th>
+              <th>proc.mem.rss</th>
+              <th>proc.mem.rss_p</th>
+              <th>proc.mem.share</th>
+            </tr>
+          </footer>      
+        </table>
+      </div>
 
     </div> <!-- /container -->
 
